@@ -1,0 +1,273 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Blog-details {% endblock title %}
+{% block content %}     
+
+   <!-- Body main wrapper start -->
+   <main>
+
+      <!-- Breadcrumb area start  -->
+      <div class="breadcrumb__area theme-bg-1 p-relative z-index-11 pt-95 pb-95">
+         <div class="breadcrumb__thumb" data-background="{% static 'imgs/bg/breadcrumb-bg.jpg' %}"></div>
+         <div class="container">
+            <div class="row justify-content-center">
+               <div class="col-xxl-12">
+                  <div class="breadcrumb__wrapper text-center">
+                     <h2 class="breadcrumb__title">Blog Details</h2>
+                     <div class="breadcrumb__menu">
+                        <nav>
+                           <ul>
+                              <li><span><a href="index.html">Home</a></span></li>
+                              <li><span>Blog Details</span></li>
+                           </ul>
+                        </nav>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Breadcrumb area start  -->
+
+      <!-- Postbox details area start -->
+      <section class="postbox__area section-space">
+         <div class="container">
+            <div class="row gy-50">
+               <div class="col-xxl-8 col-lg-8">
+                  <div class="postbox__wrapper theme-bg-2">
+                      <article class="postbox__item mb-50 transition-3">
+                          <div class="postbox__thumb w-img mb-30">
+                              <a href="#">
+                                  <img src="{{ blog.image.url }}" alt="{{ blog.title }}">
+                              </a>
+                          </div>
+                          <div class="postbox__content">
+                              <h3 class="postbox__title">{{ blog.title }}</h3>
+                              <div class="postbox__text">
+                                  <p>{{ blog.description|safe }}</p>
+                              </div>
+                          </div>
+                      </article>
+              
+                    <!-- blog/templates/blog-details.html -->
+
+<div class="postbox__comment-wrapper">
+    <div class="postbox__comment mb-60">
+        <h3 class="postbox__comment-title">Comments ({{ comments|length }})</h3>
+        <ul>
+            {% for comment in comments %}
+            <li>
+                <div class="postbox__comment-box d-sm-flex align-items-start">
+                    <div class="postbox__comment-info">
+                        <div class="postbox__comment-avatar">
+                            <img src="{% static 'imgs/user/user-01.png' %}" alt="">
+                        </div>
+                    </div>
+                    <div class="postbox__comment-text">
+                        <div class="postbox__comment-name">
+                            <span class="post-meta">{{ comment.created_at|date:"F d, Y" }}</span>
+                            <h5><a href="#">{{ comment.author }}</a></h5>
+                        </div>
+                        <p>{{ comment.body }}</p>
+                        <div class="postbox__comment-reply">
+                            <a href="#" class="reply-toggle" data-comment-id="{{ comment.id }}">Reply</a>
+                        </div>
+                    </div>
+                </div>
+                <ul class="children">
+                    {% for reply in comment.replies.all %}
+                    <li>
+                        <div class="postbox__comment-box d-sm-flex align-items-start">
+                            <div class="postbox__comment-info">
+                                <div class="postbox__comment-avatar">
+                                    <img src="{% static 'imgs/user/user-02.png' %}" alt="">
+                                </div>
+                            </div>
+                            <div class="postbox__comment-text">
+                                <div class="postbox__comment-name">
+                                    <span class="post-meta">{{ reply.created_at|date:"F d, Y" }}</span>
+                                    <h5><a href="#">{{ reply.user.username }}</a></h5>
+                                </div>
+                                <p>{{ reply.body }}</p>
+                            </div>
+                        </div>
+                    </li>
+                    {% endfor %}
+                </ul>
+                <!-- Reply form -->
+                <div class="postbox__comment-form reply-form-{{ comment.id }}" style="display: none;">
+                    <h3 class="postbox__comment-form-title">Reply to {{ comment.author }}</h3>
+                    <p>Your email address will not be published. Required fields are marked *</p>
+                    <form method="post">
+                        {% csrf_token %}
+                        {{ reply_form.as_p }}
+                        <input type="hidden" name="parent_id" value="{{ comment.id }}">
+                        <div class="col-xxl-12">
+                            <div class="postbox__comment-agree d-flex align-items-start mb-25">
+                                <input class="e-check-input" type="checkbox" id="e-agree">
+                                <label class="e-check-label" for="e-agree">Save my name, email, and website in this browser for the next time I comment.</label>
+                            </div>
+                        </div>
+                        <div class="col-xxl-12">
+                            <div class="postbox__comment-btn">
+                                <button class="fill-btn" type="submit" name="reply_form">
+                                    <span class="fill-btn-inner">
+                                        <span class="fill-btn-normal">Submit Reply</span>
+                                        <span class="fill-btn-hover">Submit Reply</span>
+                                    </span>
+                                </button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </li>
+            {% empty %}
+            <li>No comments yet.</li>
+            {% endfor %}
+        </ul>
+    </div>
+    <div class="postbox__comment-form">
+        <h3 class="postbox__comment-form-title">Leave A Reply</h3>
+        <p>Your email address will not be published. Required fields are marked *</p>
+        <form method="post">
+            {% csrf_token %}
+            {{ comment_form.as_p }}
+            <div class="col-xxl-12">
+                <div class="postbox__comment-agree d-flex align-items-start mb-25">
+                    <input class="e-check-input" type="checkbox" id="e-agree">
+                    <label class="e-check-label" for="e-agree">Save my name, email, and website in this browser for the next time I comment.</label>
+                </div>
+            </div>
+            <div class="col-xxl-12">
+                <div class="postbox__comment-btn">
+                    <button class="fill-btn" type="submit" name="comment_form">
+                        <span class="fill-btn-inner">
+                            <span class="fill-btn-normal">Submit Comment</span>
+                            <span class="fill-btn-hover">Submit Comment</span>
+                        </span>
+                    </button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+                    
+                </div>
+              </div>
+              <!-- blog/templates/blog-details.html -->
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        document.querySelectorAll('.reply-toggle').forEach(function(toggle) {
+            toggle.addEventListener('click', function(event) {
+                event.preventDefault();
+                var commentId = this.dataset.commentId;
+                var replyForm = document.querySelector('.reply-form-' + commentId);
+                if (replyForm) {
+                    replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+                }
+            });
+        });
+    });
+    </script>
+        
+               <div class="col-xxl-4 col-lg-4">
+                  <div class="sidebar__wrapper bd-sticky pl-30">
+                     <div class="sidebar__widget mb-20">
+                        <div class="sidebar__widget-content">
+                           <div class="sidebar__search">
+                              <form action="#">
+                                 <div class="sidebar__search-input">
+                                    <input type="text" placeholder="Enter your keywords...">
+                                    <button type="submit">
+                                       <svg width="20" height="20" viewBox="0 0 20 20" fill="none"
+                                          xmlns="http://www.w3.org/2000/svg">
+                                          <path
+                                             d="M9.55 18.1C14.272 18.1 18.1 14.272 18.1 9.55C18.1 4.82797 14.272 1 9.55 1C4.82797 1 1 4.82797 1 9.55C1 14.272 4.82797 18.1 9.55 18.1Z"
+                                             stroke="currentColor" stroke-width="1.5" stroke-linecap="round"
+                                             stroke-linejoin="round" />
+                                          <path d="M19.0002 19.0002L17.2002 17.2002" stroke="currentColor"
+                                             stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                       </svg>
+                                    </button>
+                                 </div>
+                              </form>
+                           </div>
+                        </div>
+                     </div>
+                     <div class="sidebar__widget mb-45">
+                        <h3 class="sidebar__widget-title">Category</h3>
+                        <ul>
+                           <li>
+                              <a href="{% url 'blog-page' %}">All
+                                  <span>{{ all_blogs_count }}</span> 
+                              </a>
+                          </li>
+                        </ul>
+                        {% for category in categories  %}
+                        <div class="sidebar__widget-content">
+                           <ul>
+                              <li><a href="{% url 'blog-page' category.id %}">{{category.name}}<span>{{ category.blog_set.count }}</span></a></li>
+                           </ul>
+                        </div>
+                        {% endfor %}
+                     </div>
+                        <div class="sidebar__widget-content">
+                           <div class="sidebar__widget mb-45">
+                              <h3 class="sidebar__widget-title">Recent Post</h3>
+                              <div class="sidebar__widget-content">
+                                  <div class="sidebar__post">
+                                      {% for post in recent_posts %}
+                                      <div class="rc__post d-flex align-items-center">
+                                          <div class="rc__post-thumb">
+                                              <a href="{% url 'blog_detail' post.pk %}"><img src="{{ post.image.url }}" alt="img"></a>
+                                          </div>
+                                          <div class="rc__post-content">
+                                              <h4 class="rc__post-title">
+                                                  <a href="{% url 'blog_detail' post.pk %}">{{ post.title }}</a>
+                                              </h4>
+                                              <div class="rc__meta">
+                                                  <span>
+                                                      <svg width="15" height="15" viewBox="0 0 15 15" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                          <path d="M7.5 14C11.0899 14 14 11.0899 14 7.5C14 3.91015 11.0899 1 7.5 1C3.91015 1 1 3.91015 1 7.5C1 11.0899 3.91015 14 7.5 14Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                          <path d="M7.5 3.59961V7.49961L10.1 8.79961" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                                                      </svg>{{ post.created_date|date:"F d, Y" }}
+                                                  </span>
+                                              </div>
+                                          </div>
+                                      </div>
+                                      {% empty %}
+                                          <p>No recent posts available.</p>
+                                      {% endfor %}
+                                  </div>
+                              </div>
+                          </div>
+                          
+                        </div>
+                    
+                     <div class="sidebar__widget">
+                        <h3 class="sidebar__widget-title">Tags</h3>
+                        <div class="sidebar__widget-content">
+                           <ul>
+                              {% for tag in tags %}
+                              <li>
+                                  <a href="{% url 'blogs_by_tag' tag.id %}">
+                                      {{ tag.name }}
+                                      <span>{{ tag.blog_count }}</span>
+                                  </a>
+                              </li>
+                              {% endfor %}
+                          </ul>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </section>
+      <!-- Postbox details area end -->
+
+   </main>
+   <!-- Body main wrapper end -->
+
+   {% endblock content %}     

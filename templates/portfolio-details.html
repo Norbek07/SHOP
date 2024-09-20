@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block title %} Portfolio-details {% endblock title %}
+{% block content %}     
+
+   <!-- Body main wrapper start -->
+   <main>
+
+      <!-- Breadcrumb area start  -->
+      <div class="breadcrumb__area theme-bg-1 p-relative z-index-11 pt-95 pb-95">
+         <div class="breadcrumb__thumb" data-background="{% static 'imgs/bg/breadcrumb-bg.jpg' %}"></div>
+         <div class="container">
+            <div class="row justify-content-center">
+               <div class="col-xxl-12">
+                  <div class="breadcrumb__wrapper text-center">
+                     <h2 class="breadcrumb__title">Portfolio Details</h2>
+                     <div class="breadcrumb__menu">
+                        <nav>
+                           <ul>
+                              <li><span><a href="index.html">Home</a></span></li>
+                              <li><span>Portfolio Details</span></li>
+                           </ul>
+                        </nav>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+      </div>
+      <!-- Breadcrumb area start  -->
+
+      <!-- Portfolio area start -->
+      <section class="pt-120 pb-120">
+         <div class="container">
+            <h3 class="mb-30">{{ portfolio.title }}</h3>
+            <p>{{ portfolio.description|safe }}</p>
+            <ul class="portfolio__info mt-30 mb-40">
+                <li><span>Date:</span> {{ portfolio.created_date|date:"F j, Y" }}</li>
+                <li><span>Category:</span> {{ portfolio.category }}</li>
+                <li><span>Client:</span> {{ portfolio.client }}</li>
+                <li><span>Location:</span> {{ portfolio.location }}</li>
+            </ul>
+            <img class="w-100" src="{{ portfolio.image.url }}" alt="{{ portfolio.title }}">
+            <p class="mt-30">{{ portfolio.description|safe }}</p>
+        </div>        
+      </section>
+      <!-- Portfolio area end -->
+
+   </main>
+   <!-- Body main wrapper end -->
+
+   {% endblock content %}     
